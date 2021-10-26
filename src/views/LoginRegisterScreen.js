@@ -3,17 +3,19 @@ import { Col, Row } from 'react-bootstrap';
 import { useLocation, useHistory } from "react-router-dom";
 import { Formulario } from '../components/Formulario';
 import { UsuarioContext } from '../context/UsuarioContext';
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
 export const LoginRegisterScreen = () => {
 
     const [esLogin, setEsLogin] = useState(true);
     const location = useLocation();
     const history = useHistory();
-    const {usuario} = useContext(UsuarioContext);
+    const { usuario, setUsuario } = useContext(UsuarioContext);
 
     useEffect(() => {
 
-        if(usuario){
+        if (usuario) {
             history.push('/');
         }
 
@@ -27,35 +29,92 @@ export const LoginRegisterScreen = () => {
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     const handleLogin = () => {
-        
+
         setEsLogin(!esLogin);
 
         if (esLogin) {
-            console.log("vamos al register",esLogin);
+            console.log("vamos al register", esLogin);
             history.push('/register');
         } else {
             history.push('/login');
         }
-        
-        
+
+
     }
 
-    return (
-        <div className="mt-4">
-            {esLogin
-                ?
-                <h1>Login</h1>
-                :
-                <h1>Register</h1>
-            }
-            <Row>
-                <Col md={6}>
-                    <Formulario esLogin={esLogin} />
-                </Col>
-            </Row>
 
-            <button className="mt-4" onClick={handleLogin}>Ir al {esLogin ? "ir al Registro" : "ir al Login"} </button>
 
-        </div>
-    )
+    const ejecutaLogin = (valores) => {
+        console.log("LOGIN", valores);
+        // vamor a llamar a AXIOS a la API BACKEND y pasarle los valores. LOGIN USUARIO
+        axios.post('http://localhost:8000/api/auth/login', valores).then(res => {
+            console.log(res);
+            Swal.fire(
+                'Exito en logear',
+                'bienvenido',
+                'success'
+            );
+            // que se logee.
+            setUsuario(res.data._id);
+            localStorage.setItem('usuario', res.data._id);
+            history.push('/');
+        }).catch(err => {
+            console.log(err);
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Usuario o contraseña incorrectos',
+            });
+        });
+
+
+    }
+
+    const ejecutaRegister = (valores) => {
+        console.log("REGISTRO", valores);
+        axios.post('http://localhost:8000/api/auth/register', valores).then(res => {
+
+            console.log(res.data);
+            Swal.fire(
+                'Registro exitoso',
+                'Ahora puedes iniciar sesión',
+                'success'
+            );
+            // que se logee.
+            setUsuario(res.data._id);
+            localStorage.setItem('usuario', res.data._id);
+            history.push('/');
+
+        }).catch(err => {
+            console.log(err);
+            Swal.fire(
+                'Error',
+                'No se pudo registrar el usuario',
+                'error'
+            );
+        })
+    }
+
+
+
+
+
+return (
+    <div className="mt-4">
+        {esLogin
+            ?
+            <h1>Login</h1>
+            :
+            <h1>Register</h1>
+        }
+        <Row>
+            <Col md={6}>
+                <Formulario esLogin={esLogin} ejecutaSubmit={esLogin ? ejecutaLogin : ejecutaRegister} />
+            </Col>
+        </Row>
+
+        <button className="mt-4" onClick={handleLogin}>Ir al {esLogin ? "ir al Registro" : "ir al Login"} </button>
+
+    </div>
+)
 }

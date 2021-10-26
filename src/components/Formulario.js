@@ -4,7 +4,7 @@ import { useHistory } from 'react-router';
 import Swal from 'sweetalert2';
 import { UsuarioContext } from '../context/UsuarioContext';
 
-export const Formulario = ({ esLogin }) => {
+export const Formulario = ({ esLogin, ejecutaSubmit }) => {
 
     const history = useHistory();
     const { setUsuario} = useContext(UsuarioContext);
@@ -44,25 +44,8 @@ export const Formulario = ({ esLogin }) => {
             return false;
         }
 
-        // llamado a aexios a validar si las password es verdadera o no.
-        if(password === "123"){
-            const resNombre = "Francisco";
-            setUsuario(resNombre);
-            localStorage.setItem('usuario', resNombre);
+        ejecutaSubmit(valores);
 
-            history.push('/');
-            reset();
-        }
-        else{
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Contraseña incorrecta'
-            })
-        }
-        
-
-        console.log(valores);
         
     }
 
