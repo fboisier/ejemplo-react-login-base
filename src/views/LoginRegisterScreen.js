@@ -55,8 +55,8 @@ export const LoginRegisterScreen = () => {
                 'success'
             );
             // que se logee.
-            setUsuario(res.data._id);
-            localStorage.setItem('usuario', res.data._id);
+            setUsuario({id: res.data._id, nombre: res.data.nombre });
+            localStorage.setItem('usuario', JSON.stringify({id: res.data._id, nombre: res.data.nombre }) );
             history.push('/');
         }).catch(err => {
             console.log(err);
@@ -81,15 +81,15 @@ export const LoginRegisterScreen = () => {
                 'success'
             );
             // que se logee.
-            setUsuario(res.data._id);
-            localStorage.setItem('usuario', res.data._id);
+            setUsuario({id: res.data._id, nombre: res.data.nombre });
+            localStorage.setItem('usuario', JSON.stringify({id: res.data._id, nombre: res.data.nombre }) );
             history.push('/');
 
         }).catch(err => {
-            console.log(err);
+            console.log(err.response.data.message);
             Swal.fire(
                 'Error',
-                'No se pudo registrar el usuario',
+                err.response.data.message,
                 'error'
             );
         })
@@ -112,8 +112,9 @@ return (
                 <Formulario esLogin={esLogin} ejecutaSubmit={esLogin ? ejecutaLogin : ejecutaRegister} />
             </Col>
         </Row>
-
-        <button className="mt-4" onClick={handleLogin}>Ir al {esLogin ? "ir al Registro" : "ir al Login"} </button>
+        <div className="mt-4">
+            <a className="text-decoration-underline text-primary" onClick={handleLogin}><i>Ir al {esLogin ? "ir al Registro" : "ir al Login"} </i></a>
+        </div>
 
     </div>
 )

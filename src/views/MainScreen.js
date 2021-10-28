@@ -26,8 +26,7 @@ export const MainScreen = () => {
     return (
         <div>
             <h1>Pantalla que debe ver el usuario SOLO cuando esta "LOGEADO"</h1>
-            <h1>Hola {usuario}</h1>
-            <Button variant="primary" onClick={handleLogOut}>CERRAR SESION</Button>
+            <h1>Hola {usuario?.nombre}</h1>
         </div>
     )
 }

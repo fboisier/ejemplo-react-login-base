@@ -16,7 +16,7 @@ module.exports.loginUsuario = (request, response) => {
             // ENCRIPTAR LO QUE ENVIA EL LOGIN, Y COMPARAR ENTRE CLAVES CIFRADAS CON BCRYPT
 
             if(usuario.password == request.body.password){
-                return response.json({_id: usuario._id});
+                return response.json({_id: usuario._id, nombre: `${usuario.nombre} ${usuario.apellido}`});
             }else{
                 return response.status(401).json({message:"Contraseña incorrecta"});
             }
