@@ -19,7 +19,7 @@ export const TravelScreen = () => {
 
     return (
         <div>
-            <h1>Bienvenido  a la patanlla de viajes.</h1>
+            <h1>Bienvenido  a la patanlla de viajes CON CAMBIOS.</h1>
         </div>
     )
 }
