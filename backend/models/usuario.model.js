@@ -6,7 +6,7 @@ const UsuarioSchema = new mongoose.Schema({
         type: String,
         required: [true, 'El nombre es necesario'],
         trim: true,
-        minlength: [3, 'El nombre debe tener al menos 3 caracteres'],
+        minlength: [10, 'El nombre debe tener al menos 10 caracteres'],
     },
     apellido: {
         type: String,
@@ -23,6 +23,6 @@ const UsuarioSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
-UsuarioSchema.plugin(uniqueValidator, { message: '{PATH} debe ser unico' });
+UsuarioSchema.plugin(uniqueValidator, { message: '{PATH} debe ser unico porfavor' });
 const Usuario = mongoose.model('Usuario', UsuarioSchema);
 module.exports = {Usuario};
