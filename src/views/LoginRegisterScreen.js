@@ -56,7 +56,7 @@ export const LoginRegisterScreen = () => {
             );
             // que se logee.
             setUsuario({id: res.data._id, nombre: res.data.nombre });
-            localStorage.setItem('usuario', JSON.stringify({id: res.data._id, nombre: res.data.nombre }) );
+            localStorage.setItem('usuario', JSON.stringify({id: res.data._id, nombre: res.data.nombre, token: res.data.token }) );
             history.push('/');
         }).catch(err => {
             console.log(err);
@@ -82,7 +82,7 @@ export const LoginRegisterScreen = () => {
             );
             // que se logee.
             setUsuario({id: res.data._id, nombre: res.data.nombre });
-            localStorage.setItem('usuario', JSON.stringify({id: res.data._id, nombre: res.data.nombre }) );
+            localStorage.setItem('usuario', JSON.stringify({id: res.data._id, nombre: res.data.nombre, token: res.data.token }) );
             history.push('/');
 
         }).catch(err => {

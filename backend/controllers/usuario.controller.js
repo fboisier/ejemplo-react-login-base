@@ -1,26 +1,55 @@
 const { Usuario } = require('../models/usuario.model');
+const bcrypt = require('bcryptjs');
+const { generarJWT } = require('../helpers/jwt');
 
-module.exports.createUsuario = (request, response) => {
-    console.log(request.body);
-    // SE DEBE ENCRIPTAR LA CONTRASEÑA ANTES DE GUARDAR
-    Usuario.create(request.body).then(usuario => response.json(usuario))
-        .catch(err => response.status(400).json(err));
+
+
+
+module.exports.createUsuario = async (request, response) => {
+
+    try {
+        console.log(request.body);
+        usuario = Usuario(request.body);
+
+        // ENCRIPTAR CLAVE
+        const salt = bcrypt.genSaltSync();
+        usuario.password = bcrypt.hashSync(usuario.password, salt);
+
+        await usuario.save();
+
+        const token = await generarJWT(usuario._id, usuario.correo,usuario.nombre, usuario.apellido );
+
+        response.json({...usuario, token });
+    } catch (error) {
+        response.status(400).json(error);
+    }
+
 }
 
-module.exports.loginUsuario = (request, response) => {
-    Usuario.findOne({correo:request.body.correo})
-        .then(usuario => {
-            console.log("PASSWORD DE LA BASE DE DATOS: ",usuario.password);
-            console.log("PASSWORD DESDE EL FRONTEND:",request.body.password);
+module.exports.loginUsuario = async (request, response) => {
 
-            // ENCRIPTAR LO QUE ENVIA EL LOGIN, Y COMPARAR ENTRE CLAVES CIFRADAS CON BCRYPT
+    try {
 
-            if(usuario.password == request.body.password){
-                return response.json({_id: usuario._id, nombre: `${usuario.nombre} ${usuario.apellido}`});
-            }else{
-                return response.status(401).json({message:"Contraseña incorrecta"});
-            }
-        })
-        .catch(err => response.status(400).json(err))
+        usuario = await Usuario.findOne({ correo: request.body.correo });
+        console.log("PASSWORD DE LA BASE DE DATOS: ", usuario.password);
+        console.log("PASSWORD DESDE EL FRONTEND:", request.body.password);
+
+        // ENCRIPTAR LO QUE ENVIA EL LOGIN, Y COMPARAR ENTRE CLAVES CIFRADAS CON BCRYPT
+
+        const validPassword = bcrypt.compareSync(request.body.password, usuario.password);
+
+        if (validPassword) {
+
+            const token = await generarJWT(usuario._id, usuario.correo,usuario.nombre, usuario.apellido );
+            console.log(token);
+            return response.json({ _id: usuario._id, nombre: `${usuario.nombre} ${usuario.apellido}`, token });
+        } else {
+            return response.status(401).json({ message: "Contraseña incorrecta" });
+        }
+
+    } catch (error) {
+        response.status(400).json(error);
+    }
+
 }
 
