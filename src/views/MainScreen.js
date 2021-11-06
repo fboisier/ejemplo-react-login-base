@@ -1,11 +1,10 @@
 import React, { useContext, useEffect } from 'react'
-import { Button } from 'react-bootstrap';
 import { useHistory } from 'react-router';
 import { UsuarioContext } from '../context/UsuarioContext'
 
 export const MainScreen = () => {
 
-    const {usuario, setUsuario} = useContext(UsuarioContext);
+    const {usuario} = useContext(UsuarioContext);
     const history = useHistory();
 
     useEffect(() => {
@@ -18,10 +17,6 @@ export const MainScreen = () => {
         
     }, [usuario,history])
 
-    const handleLogOut = () => {
-        setUsuario(null);
-        localStorage.clear();
-    }
 
     return (
         <div>

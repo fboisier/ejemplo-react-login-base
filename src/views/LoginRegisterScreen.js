@@ -3,8 +3,8 @@ import { Col, Row } from 'react-bootstrap';
 import { useLocation, useHistory } from "react-router-dom";
 import { Formulario } from '../components/Formulario';
 import { UsuarioContext } from '../context/UsuarioContext';
-import axios from 'axios';
 import Swal from 'sweetalert2';
+import { axiosSinToken } from '../helpers/axios';
 
 export const LoginRegisterScreen = () => {
 
@@ -47,7 +47,8 @@ export const LoginRegisterScreen = () => {
     const ejecutaLogin = (valores) => {
         console.log("LOGIN", valores);
         // vamor a llamar a AXIOS a la API BACKEND y pasarle los valores. LOGIN USUARIO
-        axios.post('http://localhost:8000/api/auth/login', valores).then(res => {
+
+        axiosSinToken('auth/login',valores,'post').then(res => {
             console.log(res);
             Swal.fire(
                 'Exito en logear',
@@ -72,7 +73,7 @@ export const LoginRegisterScreen = () => {
 
     const ejecutaRegister = (valores) => {
         console.log("REGISTRO", valores);
-        axios.post('http://localhost:8000/api/auth/register', valores).then(res => {
+        axiosSinToken('auth/register',valores,'post').then(res => {
 
             console.log(res.data);
             Swal.fire(
@@ -113,7 +114,7 @@ return (
             </Col>
         </Row>
         <div className="mt-4">
-            <a className="text-decoration-underline text-primary" onClick={handleLogin}><i>Ir al {esLogin ? "ir al Registro" : "ir al Login"} </i></a>
+            <button className="btn btn-white text-decoration-underline text-primary" onClick={handleLogin}><i>Ir al {esLogin ? "ir al Registro" : "ir al Login"} </i></button>
         </div>
 
     </div>

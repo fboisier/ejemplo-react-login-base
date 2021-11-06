@@ -3,7 +3,14 @@ const bcrypt = require('bcryptjs');
 const { generarJWT } = require('../helpers/jwt');
 
 
-
+module.exports.todosLosUsuarios = async (req, res) => {
+    try {
+        const usuarios = await Usuario.find();
+        res.json(usuarios);
+    } catch (error) {
+        res.status(500).json(error);
+    }
+}
 
 module.exports.createUsuario = async (request, response) => {
 
@@ -19,7 +26,7 @@ module.exports.createUsuario = async (request, response) => {
 
         const token = await generarJWT(usuario._id, usuario.correo,usuario.nombre, usuario.apellido );
 
-        response.json({...usuario, token });
+        response.json({ _id: usuario._id, nombre: `${usuario.nombre} ${usuario.apellido}`, token });
     } catch (error) {
         response.status(400).json(error);
     }

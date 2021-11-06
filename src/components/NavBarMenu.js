@@ -5,7 +5,7 @@ import { UsuarioContext } from '../context/UsuarioContext';
 
 export const NavBarMenu = () => {
 
-    const {usuario, setUsuario} = useContext(UsuarioContext);
+    const { setUsuario} = useContext(UsuarioContext);
 
     const handleLogOut = () => {
         setUsuario(null);
@@ -16,7 +16,7 @@ export const NavBarMenu = () => {
         <Navbar bg="dark" expand="lg" variant="dark">
             <Container>
                 <LinkContainer to="/">
-                    <Navbar.Brand > <img src="/onepiece.png" width="100"/></Navbar.Brand>
+                    <Navbar.Brand > <img alt="marca o logo" src="/onepiece.png" width="100"/></Navbar.Brand>
                 </LinkContainer>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">

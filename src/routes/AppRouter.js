@@ -12,7 +12,7 @@ import { MainScreen } from '../views/MainScreen';
 import { TravelScreen } from '../views/TravelScreen';
 
 export const AppRouter = () => {
-    const { usuario, setUsuario } = useContext(UsuarioContext);
+    const { usuario } = useContext(UsuarioContext);
 
     return (
         <>

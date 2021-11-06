@@ -1,13 +1,11 @@
-// import axios from 'axios';
-import React, { useContext, useState } from 'react'
-import { useHistory } from 'react-router';
+import React, { useState } from 'react'
+
 import Swal from 'sweetalert2';
-import { UsuarioContext } from '../context/UsuarioContext';
 
 export const Formulario = ({ esLogin, ejecutaSubmit }) => {
 
-    const history = useHistory();
-    const { setUsuario} = useContext(UsuarioContext);
+    
+    
 
     const initialData = {
         nombre: '',
@@ -28,9 +26,7 @@ export const Formulario = ({ esLogin, ejecutaSubmit }) => {
         })
     }
 
-    const reset = () => {
-        setValores(initialData)
-    }
+
 
     const handleSubmit = e => {
         e.preventDefault();
